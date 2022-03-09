@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MotoStore.Models;
+using MotoStore.ViewModels;
 
 namespace MotoStore.Controllers
 {
