@@ -1,0 +1,40 @@
+﻿@model AccountViewModel;
+
+<div class="form-floating">
+    <input type="text" asp-for="@Model.RegisterViewModel.PhoneNumber" class="form-control" id="inputPhone">
+    <label for="inputPhone" class="form-label" asp-for="@Model.RegisterViewModel.PhoneNumber"></label>
+  <span asp-validation-for="@Model.RegisterViewModel.PhoneNumber"></span>
+</div>
+<div class="form-floating">
+      <input type="email" class="form-control" id="floatingInputGrid" asp-for="@Model.RegisterViewModel.Email">
+      <label for="floatingInputGrid" asp-for="@Model.RegisterViewModel.Email"></label>
+      <span asp-validation-for="@Model.RegisterViewModel.Email"></span>
+</div>
+<div class="form-floating">
+    <input type="text" asp-for="@Model.RegisterViewModel.UserName" class="form-control" id="inputUserName">
+    <label for="inputUserName" class="form-label" asp-for="@Model.RegisterViewModel.UserName"></label>
+    <span asp-validation-for="@Model.RegisterViewModel.UserName"></span>
+</div>
+<div class="form-floating">
+    <input type="text" asp-for="@Model.RegisterViewModel.Address" class="form-control" id="inputAddress">
+    <label for="inputAddress" class="form-label" asp-for="@Model.RegisterViewModel.Address"></label>
+    <span asp-validation-for="@Model.RegisterViewModel.Address"></span>
+</div>
+<div class="form-floating">
+    <input type="text" class="form-control" asp-for="@Model.RegisterViewModel.City" id="inputCity">
+    <label for="inputCity" class="form-label" asp-for="@Model.RegisterViewModel.City"></label>
+    <span asp-validation-for="@Model.RegisterViewModel.City"></span>
+</div>
+<div class="form-floating">
+    <input type="password" asp-for="@Model.RegisterViewModel.Password" class="form-control" id="inputPassword">
+    <label for="inputPassword" class="form-label" asp-for="@Model.RegisterViewModel.Password"></label>
+    <span asp-validation-for="@Model.RegisterViewModel.Password"></span>
+</div>
+<div class="form-floating">
+    <input type="password" asp-for="@Model.RegisterViewModel.PasswordConfirm" class="form-control" id="inputConfPassword">
+    <label for="inputConfPassword" class="form-label" asp-for="@Model.RegisterViewModel.PasswordConfirm"></label>
+    <span asp-validation-for="@Model.RegisterViewModel.PasswordConfirm"></span>
+</div>
+
+
+

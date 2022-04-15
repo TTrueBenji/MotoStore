@@ -6,7 +6,7 @@ namespace MotoStore
 {
     public class StoreApplicationContext : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
+        public override DbSet<User> Users { get; set; }
 
         public StoreApplicationContext(DbContextOptions<StoreApplicationContext> options) : base(options){ }
     }

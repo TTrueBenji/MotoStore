@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MotoStore.ViewModels;
+using MotoStore.ViewModels.Account;
 
 namespace MotoStore.Controllers
 {
@@ -16,7 +17,12 @@ namespace MotoStore.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            AccountViewModel accountViewModel = new AccountViewModel
+            {
+                RegisterViewModel = new RegisterViewModel(),
+                LoginViewModel = new LoginViewModel()
+            };
+            return View(accountViewModel);
         }
 
         public IActionResult Privacy()
