@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MotoStore.Models;
+using MotoStore.Services;
+using MotoStore.Services.Abstractions;
 
 namespace MotoStore
 {
@@ -39,6 +41,7 @@ namespace MotoStore
                     options.Password.RequireDigit = false;
                 })
                 .AddEntityFrameworkStores<StoreApplicationContext>();
+            services.AddScoped<IFileUploadService, FileUploadService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

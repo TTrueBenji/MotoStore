@@ -1,4 +1,4 @@
-﻿@model AccountViewModel;
+﻿@model LayoutViewModel;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +7,12 @@
     <title>@ViewData["Title"] - MotoStore</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/reset.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <i class="bi bi-bicycle text-warning logo"></i>
@@ -26,15 +27,21 @@
                         <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-light" asp-area="" asp-controller="Position" asp-action="All">Мотоциклы</a>
                     </li>
+                    @if (@User.IsInRole("manager"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Position" asp-action="Add">Добавить позицию</a>
+                        </li>
+                    }
                 </ul>
             </div>
             @if (User.Identity!.IsAuthenticated!)
             {
                 <div class="dropdown">
                     <a href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person text-warning user"></i>
+                        <i class="nav-link corporate-color">@User.Identity.Name</i>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><a class="nav-link text-dark" asp-controller="Account" asp-action="LogOff">Выйти</a></li>
@@ -44,17 +51,17 @@
             else
             {
                 <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                    <i class="bi bi-person text-danger user"></i>
+                    <i class="bi bi-person text-warning user"></i>
                 </button>
             }
         </div>
     </nav>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
+
+    <main role="main">
         @RenderBody()
     </main>
-</div>
+
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
@@ -100,7 +107,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2022 - MotoStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2022 - MotoStore - <a asp-area="" asp-controller="Home" asp-action="Index">Домой</a>
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

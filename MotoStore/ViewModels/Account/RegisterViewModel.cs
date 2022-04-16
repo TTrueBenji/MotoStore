@@ -22,6 +22,7 @@ namespace MotoStore.ViewModels.Account
         public string Password { get; set; }
         [DisplayName("Подтверждение пароля")]
         [Required(ErrorMessage = "Поле обязательно для ввода.")]
+        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string PasswordConfirm { get; set; }
         [DisplayName("Адрес")]
         [Required(ErrorMessage = "Поле обязательно для ввода.")]

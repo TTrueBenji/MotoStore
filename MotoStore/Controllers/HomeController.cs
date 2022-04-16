@@ -17,17 +17,12 @@ namespace MotoStore.Controllers
 
         public IActionResult Index()
         {
-            AccountViewModel accountViewModel = new AccountViewModel
+            LayoutViewModel layoutViewModel = new LayoutViewModel
             {
                 RegisterViewModel = new RegisterViewModel(),
                 LoginViewModel = new LoginViewModel()
             };
-            return View(accountViewModel);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            return View(layoutViewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

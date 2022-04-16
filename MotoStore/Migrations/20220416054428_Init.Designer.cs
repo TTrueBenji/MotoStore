@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MotoStore.Migrations
 {
     [DbContext(typeof(StoreApplicationContext))]
-    [Migration("20220313161152_AddUserEntity")]
-    partial class AddUserEntity
+    [Migration("20220416054428_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -151,6 +151,36 @@ namespace MotoStore.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("MotoStore.Models.Position", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreationDateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("EngineCapacity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Manufacturer")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("text");
+
+                    b.Property<int>("NumberOfCycles")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PathToImage")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Positions");
+                });
+
             modelBuilder.Entity("MotoStore.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -168,6 +198,9 @@ namespace MotoStore.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("CreationDateTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)

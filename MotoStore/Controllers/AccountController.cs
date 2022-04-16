@@ -29,7 +29,7 @@ namespace MotoStore.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View(new AccountViewModel
+            return View(new LayoutViewModel
             {
                 RegisterViewModel = new RegisterViewModel(), 
                 LoginViewModel = new LoginViewModel()
@@ -37,7 +37,7 @@ namespace MotoStore.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(AccountViewModel model)
+        public async Task<IActionResult> Register(LayoutViewModel model)
         {
             if(ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace MotoStore.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
-            return View("Register", new AccountViewModel
+            return View("Register", new LayoutViewModel
             {
                 RegisterViewModel = new RegisterViewModel(), 
                 LoginViewModel = new LoginViewModel{ReturnUrl = returnUrl}
@@ -81,7 +81,7 @@ namespace MotoStore.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(AccountViewModel model)
+        public async Task<IActionResult> Login(LayoutViewModel model)
         {
             if (!ModelState.IsValid) return View("Login", model);
             User user = await _userManager.FindByEmailAsync(model.LoginViewModel.Email);

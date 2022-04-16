@@ -1,0 +1,29 @@
+﻿@model LayoutViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="text-center my-5">
+        <h2 class="сatalog-headding">Каталог продукции</h2>
+    </div>
+    <div class="row mb-5">
+        @foreach (var position in Model.AllPositionsViewModel.Positions)
+        {
+            <div class="col-sm-3">
+                <a asp-action="Position" asp-route-id="@position.Id">
+                    <div class="card" style="width: 18rem;">
+                        <img src="~/@position.PathToImage" class="card-img-top" alt="@position.Model">
+                        <div class="card-body">
+                            <p>@position.Manufacturer</p>
+                            <p>@position.Model</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+    @await Html.PartialAsync("PartialViews/Position/PositionFullInfoPartialView", Model)
