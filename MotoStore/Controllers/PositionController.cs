@@ -12,7 +12,7 @@ using MotoStore.ViewModels.Positions;
 
 namespace MotoStore.Controllers
 {
-    [Authorize(Roles = "manager")]
+    
     public class PositionController : Controller
     {
         private readonly IHostEnvironment _environment;
@@ -30,12 +30,14 @@ namespace MotoStore.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "manager")]
         public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public async Task<IActionResult> Add(LayoutViewModel model)
         {
             if (ModelState.IsValid)
