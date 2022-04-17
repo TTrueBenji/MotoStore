@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MotoStore.Models;
+using MotoStore.ViewModels;
+using MotoStore.ViewModels.Account;
 
 namespace MotoStore.Controllers
 {
@@ -20,12 +17,12 @@ namespace MotoStore.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            LayoutViewModel layoutViewModel = new LayoutViewModel
+            {
+                RegisterViewModel = new RegisterViewModel(),
+                LoginViewModel = new LoginViewModel()
+            };
+            return View(layoutViewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

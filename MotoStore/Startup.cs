@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MotoStore.Models;
+using MotoStore.Services;
+using MotoStore.Services.Abstractions;
 
 namespace MotoStore
 {
@@ -20,10 +25,38 @@ namespace MotoStore
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<StoreApplicationContext>(options => options
+                    .UseLazyLoadingProxies()
+                    .UseNpgsql(connection))
+                .AddIdentity<User, IdentityRole>(options =>
+                {
+                    options.Password.RequiredLength = 4;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireDigit = false;
+                })
+                .AddEntityFrameworkStores<StoreApplicationContext>();
+            services.AddAuthorization(options =>
+            {
+
+                options.AddPolicy("manager",
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole("managers");
+                    });
+                options.AddPolicy("user",
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole("users");
+                    });
+
+            });
+            services.AddScoped<IFileUploadService, FileUploadService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,9 +77,9 @@ namespace MotoStore
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

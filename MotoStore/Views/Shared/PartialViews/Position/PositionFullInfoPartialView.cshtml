@@ -1,0 +1,25 @@
+﻿@model LayoutViewModel
+
+<div class="container">
+@if (Model.AllPositionsViewModel.PositionInfo is not null)
+{
+    <div class="col-sm-6 mx-auto">
+        <div class="card">
+            <img src="~/@Model.AllPositionsViewModel.PositionInfo.PathToImage" class="card-img-top" alt="@Model.AllPositionsViewModel.PositionInfo.Model">
+            <div class="card-body">
+                <p>@Model.AllPositionsViewModel.PositionInfo.Manufacturer</p>
+                <p>@Model.AllPositionsViewModel.PositionInfo.Model</p>
+                <p>@Model.AllPositionsViewModel.PositionInfo.EngineCapacity</p>
+                <p>@Model.AllPositionsViewModel.PositionInfo.NumberOfCycles</p>
+                @if (User.Identity is {IsAuthenticated: true } && User.IsInRole("user"))
+                {
+                    <form asp-action="Create" asp-controller="Order" method="post" asp-antiforgery="true">
+                        <input type="hidden" asp-for="OrderCreateViewModel.PositionId" value="@Model.AllPositionsViewModel.PositionInfo.Id">
+                        <button type="submit" class="btn btn-outline-warning my-1">Заказать</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+}
+</div>

@@ -1,6 +1,4 @@
-using System;
-
-namespace MotoStore.Models
+namespace MotoStore.ViewModels
 {
     public class ErrorViewModel
     {
