@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MotoStore.Models;
 using MotoStore.ViewModels.Account;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -12,6 +13,7 @@ namespace MotoStore.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ILogger<AccountController> _logger;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly StoreApplicationContext _db;
@@ -19,11 +21,13 @@ namespace MotoStore.Controllers
         public AccountController(
             StoreApplicationContext db, 
             SignInManager<User> signInManager, 
-            UserManager<User> userManager)
+            UserManager<User> userManager, 
+            ILogger<AccountController> logger)
         {
             _db = db;
             _signInManager = signInManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -84,9 +88,13 @@ namespace MotoStore.Controllers
         public async Task<IActionResult> Login(LayoutViewModel model)
         {
             if (!ModelState.IsValid) return View("Login", model);
-            User user = await _userManager.FindByEmailAsync(model.LoginViewModel.Email);
-                
-            if (user == null) user = await _userManager.FindByNameAsync(model.LoginViewModel.Email);
+            User user = await _userManager.FindByEmailAsync(model.LoginViewModel.Email)
+                        ?? await _userManager.FindByNameAsync(model.LoginViewModel.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("Email", "Неправильный логин");
+                return View("Login", model);
+            }
                 
             SignInResult result = await _signInManager.PasswordSignInAsync(
                 user,
@@ -94,16 +102,17 @@ namespace MotoStore.Controllers
                 model.LoginViewModel.RememberMe,
                 false
             );
+            
             if (result.Succeeded)
             {
                 if (!string.IsNullOrEmpty(model.LoginViewModel.ReturnUrl) && Url.IsLocalUrl(model.LoginViewModel.ReturnUrl))
-                {
                     return Redirect(model.LoginViewModel.ReturnUrl);
-                }
 
                 return RedirectToAction("Index", "Home");
             }
-            ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+            
+            ModelState.AddModelError("Password", "Неправильный пароль");
+            
             return View("Login", model);
         }
         [HttpGet]

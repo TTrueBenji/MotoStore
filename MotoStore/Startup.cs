@@ -41,6 +41,21 @@ namespace MotoStore
                     options.Password.RequireDigit = false;
                 })
                 .AddEntityFrameworkStores<StoreApplicationContext>();
+            services.AddAuthorization(options =>
+            {
+
+                options.AddPolicy("manager",
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole("managers");
+                    });
+                options.AddPolicy("user",
+                    authBuilder =>
+                    {
+                        authBuilder.RequireRole("users");
+                    });
+
+            });
             services.AddScoped<IFileUploadService, FileUploadService>();
         }
 

@@ -6,6 +6,7 @@ namespace MotoStore.ViewModels.Account
     public class RegisterViewModel
     {
         [Required(ErrorMessage = "Поле обязательно для ввода.")]
+        [EmailAddress]
         // [RegularExpression (@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Некорректный адрес")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Поле обязательно для ввода.")]

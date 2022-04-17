@@ -29,7 +29,6 @@ namespace MotoStore.ViewModels.Positions
         public int EngineCapacity { get; set; }
         
         [NotMapped]
-        [JsonIgnore]
         [Attributes.Validation.FileExtensions("jpg,png", ErrorMessage = "Некорректный формат файла")]
         [DisplayName("Загрузить изображение")]
         public IFormFile Image { get; set; }

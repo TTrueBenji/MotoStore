@@ -3,10 +3,14 @@
 <div class="form-floating">
     <input type="email" asp-for="@Model.LoginViewModel.Email" class="form-control" id="inputEmail">
     <label for="inputEmail" class="form-label" asp-for="@Model.LoginViewModel.Email"></label>
-    <span asp-validation-for="@Model.LoginViewModel.Email"></span>
+    <span class="text-danger" asp-validation-for="@Model.LoginViewModel.Email"></span>
 </div>
 <div class="form-floating">
     <input type="password" asp-for="@Model.LoginViewModel.Password" class="form-control" id="inputPassword">
     <label for="inputPassword" class="form-label" asp-for="@Model.LoginViewModel.Password"></label>
-    <span asp-validation-for="@Model.LoginViewModel.Password"></span>
+    <span class="text-danger" asp-validation-for="@Model.LoginViewModel.Password"></span>
+</div>
+<div class="mb-3 form-check login-checkbox">
+    <input type="checkbox" asp-for="@Model.LoginViewModel.RememberMe" value="true" class="form-check-input" id="remember1">
+    <label class="form-check-label" asp-for="@Model.LoginViewModel.RememberMe" for="remember1"></label>
 </div>

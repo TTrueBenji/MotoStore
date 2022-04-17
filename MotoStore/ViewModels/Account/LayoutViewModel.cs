@@ -1,4 +1,5 @@
-﻿using MotoStore.ViewModels.Positions;
+﻿using MotoStore.ViewModels.Order;
+using MotoStore.ViewModels.Positions;
 
 namespace MotoStore.ViewModels.Account
 {
@@ -8,6 +9,6 @@ namespace MotoStore.ViewModels.Account
         public LoginViewModel LoginViewModel { get; set; }
         public AllPositionsViewModel AllPositionsViewModel { get; set; }
         public CreatePositionViewModel CreatePositionViewModel { get; set; }
-        public PositionInfoViewModel PositionInfoViewModel { get; set; }
+        public OrderCreateViewModel OrderCreateViewModel { get; set; }
     }
 }

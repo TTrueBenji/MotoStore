@@ -5,32 +5,36 @@
     Layout = "_Layout";
 }
 
-<h2>Добавить позицию</h2>
-<form asp-action="Add" asp-controller="Position" enctype="multipart/form-data" method="post">
-    <div class="form-floating">
-        <input type="text" asp-for="@Model.CreatePositionViewModel.Manufacturer" class="form-control" id="inputManufacturer">
-        <label for="inputManufacturer" class="form-label" asp-for="@Model.CreatePositionViewModel.Manufacturer"></label>
-        <span asp-validation-for="@Model.CreatePositionViewModel.Manufacturer"></span>
+<div class="container">
+    <div class="text-center my-5">
+        <h2>Добавить позицию</h2>
     </div>
-    <div class="form-floating">
-        <input type="text" asp-for="@Model.CreatePositionViewModel.Model" class="form-control" id="inputModel">
-        <label for="inputModel" class="form-label" asp-for="@Model.CreatePositionViewModel.Model"></label>
-        <span asp-validation-for="@Model.CreatePositionViewModel.Model"></span>
-    </div>
-    <div class="form-floating">
-        <input type="text" asp-for="@Model.CreatePositionViewModel.NumberOfCycles" class="form-control" id="inputNumberOfCycles">
-        <label for="inputNumberOfCycles" class="form-label" asp-for="@Model.CreatePositionViewModel.NumberOfCycles"></label>
-        <span asp-validation-for="@Model.CreatePositionViewModel.NumberOfCycles"></span>
-    </div>
-    <div class="form-floating">
-        <input type="text" asp-for="@Model.CreatePositionViewModel.EngineCapacity" class="form-control" id="inputEngineCapacity">
-        <label for="inputEngineCapacity" class="form-label" asp-for="@Model.CreatePositionViewModel.EngineCapacity"></label>
-        <span asp-validation-for="@Model.CreatePositionViewModel.EngineCapacity"></span>
-    </div>
-    <div class="form-floating">
-        <input type="file" asp-for="@Model.CreatePositionViewModel.Image" class="form-control" id="inputImage">
-        <label for="inputImage" class="form-label" asp-for="@Model.CreatePositionViewModel.Image"></label>
-        <span asp-validation-for="@Model.CreatePositionViewModel.Image"></span>
-    </div>
-    <button class="btn btn-warning" type="submit">Добавить</button>
-</form>
+    <form asp-action="Add" asp-controller="Position" enctype="multipart/form-data" method="post" class="col-md-9 mx-auto">
+        <div class="form-floating my-2">
+            <input type="text" asp-for="@Model.CreatePositionViewModel.Manufacturer" class="form-control" id="inputManufacturer">
+            <label for="inputManufacturer" class="form-label" asp-for="@Model.CreatePositionViewModel.Manufacturer"></label>
+            <span class="text-warning" asp-validation-for="@Model.CreatePositionViewModel.Manufacturer"></span>
+        </div>
+        <div class="form-floating my-2">
+            <input type="text" asp-for="@Model.CreatePositionViewModel.Model" class="form-control" id="inputModel">
+            <label for="inputModel" class="form-label" asp-for="@Model.CreatePositionViewModel.Model"></label>
+            <span class="text-warning" asp-validation-for="@Model.CreatePositionViewModel.Model"></span>
+        </div>
+        <div class="form-floating my-2">
+            <input type="text" asp-for="@Model.CreatePositionViewModel.NumberOfCycles" class="form-control" id="inputNumberOfCycles">
+            <label for="inputNumberOfCycles" class="form-label" asp-for="@Model.CreatePositionViewModel.NumberOfCycles"></label>
+            <span class="text-warning" asp-validation-for="@Model.CreatePositionViewModel.NumberOfCycles"></span>
+        </div>
+        <div class="form-floating my-2">
+            <input type="text" asp-for="@Model.CreatePositionViewModel.EngineCapacity" class="form-control" id="inputEngineCapacity">
+            <label for="inputEngineCapacity" class="form-label" asp-for="@Model.CreatePositionViewModel.EngineCapacity"></label>
+            <span class="text-warning" asp-validation-for="@Model.CreatePositionViewModel.EngineCapacity"></span>
+        </div>
+        <div class="form-floating my-2">
+            <input type="file" asp-for="@Model.CreatePositionViewModel.Image" class="form-control" id="inputImage">
+            <label for="inputImage" class="form-label" asp-for="@Model.CreatePositionViewModel.Image"></label>
+            <span class="text-warning" asp-validation-for="@Model.CreatePositionViewModel.Image"></span>
+        </div>
+        <button class="btn btn-warning my-1" type="submit">Добавить</button>
+    </form>
+</div>

@@ -83,3 +83,6 @@ body {
 .nav-link:focus, .nav-link:hover {
   color: #83650b;
 }
+.login-checkbox{
+  margin-left: 9px;
+}

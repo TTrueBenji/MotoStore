@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MotoStore.Models;
+using MotoStore.ViewModels.Order;
 using MotoStore.ViewModels.Positions;
 
 namespace MotoStore.MapConfigurations
@@ -43,6 +44,16 @@ namespace MotoStore.MapConfigurations
                 NumberOfCycles = model.NumberOfCycles,
                 PathToImage = model.PathToImage
             };
+        }
+
+        public static Order MapToOrder(this OrderCreateViewModel model)
+        {
+            Order order = new Order
+            {
+                CreationDateTime = DateTime.Now,
+                PositionId = model.PositionId
+            };
+            return order;
         }
     }
 }

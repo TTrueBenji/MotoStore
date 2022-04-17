@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MotoStore.MapConfigurations;
 using MotoStore.Services.Abstractions;
 using MotoStore.ViewModels.Account;
@@ -15,6 +16,7 @@ namespace MotoStore.Controllers
     
     public class PositionController : Controller
     {
+        private readonly ILogger<AccountController> _logger;
         private readonly IHostEnvironment _environment;
         private readonly IFileUploadService _fileUploadService;
         private readonly StoreApplicationContext _application;
@@ -22,11 +24,13 @@ namespace MotoStore.Controllers
         public PositionController(
             IHostEnvironment environment,
             StoreApplicationContext application,
-            IFileUploadService fileUploadService)
+            IFileUploadService fileUploadService, 
+            ILogger<AccountController> logger)
         {
             _environment = environment;
             _application = application;
             _fileUploadService = fileUploadService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -47,12 +51,11 @@ namespace MotoStore.Controllers
                     $"wwwroot\\Images\\Positions\\{directoryName}\\");
                 string fileName = FileNameModifier(model.CreatePositionViewModel.Model,
                     model.CreatePositionViewModel.Image.FileName);
-                await _fileUploadService.Upload(path,  fileName,
-                    model.CreatePositionViewModel.Image);
+                await _fileUploadService.Upload(path,  fileName, model.CreatePositionViewModel.Image);
                 var position = model.CreatePositionViewModel.MapToPosition();
                 string imagePath = $"Images/Positions/{directoryName}/{fileName}";
                 position.PathToImage = imagePath;
-                _application.Add(position);
+                _application.Positions.Add(position);
                 await _application.SaveChangesAsync();
                 
 
@@ -88,7 +91,7 @@ namespace MotoStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Position(int id)
+        public IActionResult Position(string id)
         {
             //TODO: Сделать паггинацию 
             var positions = _application.Positions.ToList();
@@ -113,25 +116,10 @@ namespace MotoStore.Controllers
                 },
                 LoginViewModel = new LoginViewModel(),
                 RegisterViewModel = new RegisterViewModel(),
-                CreatePositionViewModel = new CreatePositionViewModel(),
-                PositionInfoViewModel = new PositionInfoViewModel()
+                CreatePositionViewModel = new CreatePositionViewModel()
             };
             TempData["model"] = JsonSerializer.Serialize(layoutModel);
-            return RedirectToAction("All", "Position", new
-            {
-                model = new LayoutViewModel
-                {
-                    AllPositionsViewModel = new AllPositionsViewModel
-                    {
-                        Positions = positions.MapToShortInfoList(),
-                        PositionInfo = positionViewModel
-                    },
-                    LoginViewModel = new LoginViewModel(),
-                    RegisterViewModel = new RegisterViewModel(),
-                    CreatePositionViewModel = new CreatePositionViewModel(),
-                    PositionInfoViewModel = new PositionInfoViewModel()
-                }
-            });
+            return RedirectToAction("All", "Position");
         }
 
         [NonAction]
