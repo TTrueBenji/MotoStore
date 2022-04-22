@@ -14,6 +14,8 @@ namespace MotoStore.Models
         public NumberOfCycles NumberOfCycles { get; set; }
         public int EngineCapacity { get; set; }
         public string PathToImage { get; set; }
+
+        public bool Deleted { get; set; }
         //TODO: Проработать
         // public decimal Price { get; set; }
     }

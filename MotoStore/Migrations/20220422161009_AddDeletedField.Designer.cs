@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotoStore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MotoStore.Migrations
 {
     [DbContext(typeof(StoreApplicationContext))]
-    partial class StoreApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220422161009_AddDeletedField")]
+    partial class AddDeletedField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,12 +159,6 @@ namespace MotoStore.Migrations
 
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsCanceled")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("PositionId")
                         .IsRequired()

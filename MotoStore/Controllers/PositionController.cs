@@ -19,18 +19,19 @@ namespace MotoStore.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IHostEnvironment _environment;
         private readonly IFileUploadService _fileUploadService;
-        private readonly StoreApplicationContext _application;
+        private readonly IPositionService _positionService;
+        
 
         public PositionController(
             IHostEnvironment environment,
-            StoreApplicationContext application,
             IFileUploadService fileUploadService, 
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, 
+            IPositionService positionService)
         {
             _environment = environment;
-            _application = application;
             _fileUploadService = fileUploadService;
             _logger = logger;
+            _positionService = positionService;
         }
 
         [HttpGet]
@@ -44,6 +45,7 @@ namespace MotoStore.Controllers
         [Authorize(Roles = "manager")]
         public async Task<IActionResult> Add(LayoutViewModel model)
         {
+            //TODO: Добавить Try Catch и страницу ошибок.
             if (ModelState.IsValid)
             {
                 string directoryName = DirectoryNameModifier(model.CreatePositionViewModel.Model);
@@ -55,11 +57,9 @@ namespace MotoStore.Controllers
                 var position = model.CreatePositionViewModel.MapToPosition();
                 string imagePath = $"Images/Positions/{directoryName}/{fileName}";
                 position.PathToImage = imagePath;
-                _application.Positions.Add(position);
-                await _application.SaveChangesAsync();
+                _positionService.CreatePosition(position);
                 
-
-                var positions = _application.Positions.ToList();
+                var positions = _positionService.GetPositions().ToList();
                 return RedirectToAction("All", positions);
             }
 
@@ -79,34 +79,24 @@ namespace MotoStore.Controllers
             }
             
             //TODO: Сделать паггинацию 
-            var positions = _application.Positions.ToList();
-            var pos = new LayoutViewModel
+            var positions = _positionService.GetPositions().ToList();
+            var layoutViewModel = new LayoutViewModel
             {
-                AllPositionsViewModel = new AllPositionsViewModel
-                {
-                    Positions = positions.MapToShortInfoList()
-                }
+                AllPositionsViewModel = new AllPositionsViewModel 
+                    {Positions = positions.MapToShortInfoList()}
             };
-            return View(pos);
+            return View(layoutViewModel);
         }
 
         [HttpGet]
         public IActionResult Position(string id)
         {
             //TODO: Сделать паггинацию 
-            var positions = _application.Positions.ToList();
-            var positionViewModel = _application.Positions
-                .FirstOrDefault(p => p.Id == id)
+            var positions = _positionService.GetPositions().ToList();
+            var positionViewModel = _positionService
+                .GetPositionById(id)
                 .MapToPositionInfoViewModel();
-
-            // return PartialView("PartialViews/Position/PositionFullInfoPartialView", new LayoutViewModel
-            // {
-            //     AllPositionsViewModel = new AllPositionsViewModel
-            //     {
-            //         Positions = positions.MapToShortInfoList(),
-            //         PositionInfo = positionViewModel
-            //     }
-            // });
+            
             var layoutModel = new LayoutViewModel
             {
                 AllPositionsViewModel = new AllPositionsViewModel
@@ -123,14 +113,14 @@ namespace MotoStore.Controllers
         }
 
         [NonAction]
-        public string FileNameModifier(string model, string fileName)
+        private string FileNameModifier(string model, string fileName)
         {
             string modelName = DirectoryNameModifier(model);
             return modelName + "." + fileName.Split('.')[1];
         }
         
         [NonAction]
-        public string DirectoryNameModifier(string modelName)
+        private string DirectoryNameModifier(string modelName)
         {
             var modelNameParts = modelName.Split();
             string modifiedName = string.Empty;

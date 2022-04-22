@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MotoStore.Extensions;
 using MotoStore.Models;
+using MotoStore.Repositories;
+using MotoStore.Repositories.Abstractions;
 using MotoStore.Services;
 using MotoStore.Services.Abstractions;
 
@@ -41,22 +39,8 @@ namespace MotoStore
                     options.Password.RequireDigit = false;
                 })
                 .AddEntityFrameworkStores<StoreApplicationContext>();
-            services.AddAuthorization(options =>
-            {
-
-                options.AddPolicy("manager",
-                    authBuilder =>
-                    {
-                        authBuilder.RequireRole("managers");
-                    });
-                options.AddPolicy("user",
-                    authBuilder =>
-                    {
-                        authBuilder.RequireRole("users");
-                    });
-
-            });
-            services.AddScoped<IFileUploadService, FileUploadService>();
+            
+            services.AddInfrastructureServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
