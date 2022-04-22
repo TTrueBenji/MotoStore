@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using MotoStore.Enums
 @model LayoutViewModel;
 @inject UserManager<User> _userManager
 
@@ -20,11 +21,10 @@
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <i class="bi bi-bicycle text-warning logo"></i>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="navbarSupportedContent">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
                         <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -32,7 +32,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-light" asp-area="" asp-controller="Position" asp-action="All">Мотоциклы</a>
                     </li>
-                    @if (@User.IsInRole("manager"))
+                    @if (@User.IsInRole(Roles.Manager.ToString()))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Position" asp-action="Add">Добавить позицию</a>
@@ -48,10 +48,11 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><a class="nav-link text-dark" 
-                                asp-controller="Order" 
-                                asp-action="All" 
-                                asp-route-userId="@_userManager.GetUserId(User)">Мои заказы</a></li>
-                        <li><a class="nav-link text-dark" asp-controller="Account" asp-action="LogOff">Выйти</a></li>
+                                asp-controller="UserPersonalArea" 
+                                asp-action="Index" 
+                                asp-route-userId="@_userManager.GetUserId(User)">Личный кабинет</a></li>
+                        <li><a class="nav-link text-dark" asp-controller="Account" 
+                               asp-action="LogOff">Выйти</a></li>
                     </ul>
                 </div>
             }
@@ -117,7 +118,9 @@
         &copy; 2022 - MotoStore - <a asp-area="" asp-controller="Home" asp-action="Index">Домой</a>
     </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" 
+        crossorigin="anonymous"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="https://kit.fontawesome.com/e289fe644c.js" crossorigin="anonymous"></script>
 

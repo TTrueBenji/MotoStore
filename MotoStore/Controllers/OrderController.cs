@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +11,7 @@ using MotoStore.ViewModels.Account;
 
 namespace MotoStore.Controllers
 {
+    [Authorize(Roles = "user")]
     public class OrderController : Controller
     {
         private readonly ILogger<AccountController> _logger;
@@ -24,8 +27,7 @@ namespace MotoStore.Controllers
             _userManager = userManager;
             _orderService = orderService;
         }
-
-        [Authorize(Roles = "user")]
+        
         [HttpPost]
         public IActionResult Create(LayoutViewModel model)
         {
@@ -34,12 +36,6 @@ namespace MotoStore.Controllers
             _orderService.CreateOrder(order);
             
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult All(string userId)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

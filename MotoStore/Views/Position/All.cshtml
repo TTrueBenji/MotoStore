@@ -9,10 +9,10 @@
     <div class="text-center my-5">
         <h2 class="сatalog-headding">Каталог продукции</h2>
     </div>
-    <div class="row justify-content-between mb-5">
+    <div class="row justify-content-evenly mb-5">
         @foreach (var position in Model.AllPositionsViewModel.Positions)
         {
-            <div class="col-sx-12 col-sm-6 col-md-3 col-lg-4 my-2">
+            <div class="col-sx-12 col-sm-6 col-md-3 col-lg-2 my-2">
                 <a asp-action="Position" asp-route-id="@position.Id">
                     <div class="card">
                         <img src="~/@position.PathToImage" class="card-img-top" alt="@position.Model">

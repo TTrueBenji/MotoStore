@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MotoStore.Enums;
 using MotoStore.Models;
 using MotoStore.ViewModels.Account;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -62,7 +63,7 @@ namespace MotoStore.Controllers
                 var result = await _userManager.CreateAsync(user, model.RegisterViewModel.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "user");
+                    await _userManager.AddToRoleAsync(user, Roles.User.ToString());
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }

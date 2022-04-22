@@ -26,7 +26,7 @@ namespace MotoStore
             catch (Exception ex)
             {
                 var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred while seeding the database.");
+                logger.LogError(ex, "Ошибка при добавлении данных по умолчанию в БД");
             }
             await host.RunAsync();
         }

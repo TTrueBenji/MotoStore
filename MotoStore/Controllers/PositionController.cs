@@ -35,14 +35,14 @@ namespace MotoStore.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "manager")]
+        [Authorize(Roles = "Manager")]
         public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Add(LayoutViewModel model)
         {
             //TODO: Добавить Try Catch и страницу ошибок.

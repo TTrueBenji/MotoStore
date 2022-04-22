@@ -27,6 +27,7 @@ namespace MotoStore.Repositories
         public void Create(Position item)
         {
             _db.Positions.Add(item);
+            _db.SaveChanges();
         }
 
         public void Update(Position item)

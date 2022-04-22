@@ -16,7 +16,11 @@ namespace MotoStore.Repositories
 
         public IEnumerable<Order> GetAll() => _db.Orders;
         public Order GetById(string id) => _db.Orders.FirstOrDefault(o => o.Id == id);
-        public void Create(Order order) => _db.Orders.Add(order);
+        
+        public void Create(Order order){
+            _db.Orders.Add(order);
+            _db.SaveChanges();
+        }
 
         public void Update(Order order)
         {
