@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using MotoStore.MapConfigurations;
 using MotoStore.Services.Abstractions;
 using MotoStore.ViewModels.Account;
+using MotoStore.ViewModels.Layout;
 using MotoStore.ViewModels.Positions;
 
 namespace MotoStore.Controllers

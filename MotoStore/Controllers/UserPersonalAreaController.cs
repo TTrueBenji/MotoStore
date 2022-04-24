@@ -7,6 +7,7 @@ using MotoStore.MapConfigurations;
 using MotoStore.Models;
 using MotoStore.Services.Abstractions;
 using MotoStore.ViewModels.Account;
+using MotoStore.ViewModels.Layout;
 
 namespace MotoStore.Controllers
 {

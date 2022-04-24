@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,6 +6,7 @@ using MotoStore.MapConfigurations;
 using MotoStore.Models;
 using MotoStore.Services.Abstractions;
 using MotoStore.ViewModels.Account;
+using MotoStore.ViewModels.Layout;
 
 namespace MotoStore.Controllers
 {
@@ -33,6 +32,8 @@ namespace MotoStore.Controllers
         {
             Order order = model.OrderCreateViewModel.MapToOrder();
             order.UserId = _userManager.GetUserId(User);
+            _logger.LogInformation("{@Controller}.Create данные: {@Data}, USerId: {@UserId}", 
+                GetType(), model.OrderCreateViewModel, order.UserId);
             _orderService.CreateOrder(order);
             
             return RedirectToAction("Index", "Home");

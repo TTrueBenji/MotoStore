@@ -18,11 +18,14 @@ namespace MotoStore.Extensions
             services.AddScoped<IPositionService, PositionService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IManagerPersonalAreService, ManagerPersonalAreaService>();
+            services.AddScoped<IUserService, UserService>();
             
             //Repositories
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

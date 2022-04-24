@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MotoStore.Enums
-@model LayoutViewModel;
+@model MotoStore.ViewModels.Layout.LayoutViewModel;
 @inject UserManager<User> _userManager
 
 <!DOCTYPE html>
@@ -47,11 +47,30 @@
                         <i class="nav-link corporate-color">@User.Identity.Name</i>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="nav-link text-dark" 
-                                asp-controller="UserPersonalArea" 
-                                asp-action="Index" 
-                                asp-route-userId="@_userManager.GetUserId(User)">Личный кабинет</a></li>
-                        <li><a class="nav-link text-dark" asp-controller="Account" 
+                        @if(User.IsInRole("User"))
+                        {
+                            <li>
+                                <a class="nav-link text-dark"
+                                   asp-controller="UserPersonalArea"
+                                   asp-action="Index"
+                                   asp-route-userId="@_userManager.GetUserId(User)">
+                                    Личный кабинет
+                                </a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Manager"))
+                        {
+                            <li>
+                                <a class="nav-link text-dark"
+                                   asp-controller="ManagerPersonalArea"
+                                   asp-action="Index"
+                                   asp-route-userId="@_userManager.GetUserId(User)">
+                                    Личный кабинет
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a class="nav-link text-dark" asp-controller="Account"
                                asp-action="LogOff">Выйти</a></li>
                     </ul>
                 </div>

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MotoStore.Enums;
+using MotoStore.MapConfigurations;
 using MotoStore.Models;
 using MotoStore.Services.Abstractions;
 using MotoStore.ViewModels.Account;
+using MotoStore.ViewModels.Layout;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace MotoStore.Controllers
@@ -51,15 +53,7 @@ namespace MotoStore.Controllers
         {
             if(ModelState.IsValid)
             {
-                User user = new User 
-                {
-                    Email = model.RegisterViewModel.Email,
-                    UserName = model.RegisterViewModel.UserName,
-                    // PathToAvatar = model.PathToAvatar,
-                    PhoneNumber = model.RegisterViewModel.PhoneNumber,
-                    Address = model.RegisterViewModel.Address,
-                    CreationDateTime = DateTime.Now
-                };
+                User user = model.RegisterViewModel.MapToUser();
                 // string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\UserFiles\\Avatars\\");
                 // _uploadService.Upload(path, model.File.FileName, model.File);
             
