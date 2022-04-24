@@ -1,4 +1,5 @@
-﻿@model LayoutViewModel
+﻿@using MotoStore.Enums
+@model LayoutViewModel
 
 <div class="container">
 @if (Model.AllPositionsViewModel.PositionInfo is not null)
@@ -11,7 +12,7 @@
                 <p>@Model.AllPositionsViewModel.PositionInfo.Model</p>
                 <p>@Model.AllPositionsViewModel.PositionInfo.EngineCapacity</p>
                 <p>@Model.AllPositionsViewModel.PositionInfo.NumberOfCycles</p>
-                @if (User.Identity is {IsAuthenticated: true } && User.IsInRole("user"))
+                @if (User.Identity is {IsAuthenticated: true } && User.IsInRole(Roles.User.ToString()))
                 {
                     <form asp-action="Create" asp-controller="Order" method="post" asp-antiforgery="true">
                         <input type="hidden" asp-for="OrderCreateViewModel.PositionId" value="@Model.AllPositionsViewModel.PositionInfo.Id">

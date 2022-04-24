@@ -17,10 +17,12 @@ namespace MotoStore.Extensions
             services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddScoped<IPositionService, PositionService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IAccountService, AccountService>();
             
             //Repositories
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
         }
     }
 }

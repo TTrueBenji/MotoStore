@@ -11,7 +11,7 @@ using MotoStore.ViewModels.Account;
 
 namespace MotoStore.Controllers
 {
-    [Authorize(Roles = "user")]
+    [Authorize(Roles = "User")]
     public class OrderController : Controller
     {
         private readonly ILogger<AccountController> _logger;

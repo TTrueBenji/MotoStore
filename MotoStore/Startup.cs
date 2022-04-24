@@ -7,10 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MotoStore.Extensions;
 using MotoStore.Models;
-using MotoStore.Repositories;
-using MotoStore.Repositories.Abstractions;
-using MotoStore.Services;
-using MotoStore.Services.Abstractions;
+using Serilog;
 
 namespace MotoStore
 {
@@ -56,7 +53,7 @@ namespace MotoStore
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

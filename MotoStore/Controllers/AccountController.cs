@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CommonData;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MotoStore.Enums;
 using MotoStore.Models;
+using MotoStore.Services.Abstractions;
 using MotoStore.ViewModels.Account;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -18,17 +20,20 @@ namespace MotoStore.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly StoreApplicationContext _db;
+        private readonly IAccountService _accountService;
 
         public AccountController(
             StoreApplicationContext db, 
             SignInManager<User> signInManager, 
             UserManager<User> userManager, 
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, 
+            IAccountService accountService)
         {
             _db = db;
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _accountService = accountService;
         }
 
         [HttpGet]
@@ -60,15 +65,13 @@ namespace MotoStore.Controllers
             
                 // string imagePath = $"UserFiles/Avatars/{model.File.FileName}";
                 // user.PathToAvatar = imagePath;
-                var result = await _userManager.CreateAsync(user, model.RegisterViewModel.Password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, Roles.User.ToString());
-                    await _signInManager.SignInAsync(user, false);
+                var result = await _accountService.CreateAsync(user, model.RegisterViewModel.Password);
+                
+                if (result.Result is ResultOfCreation.Success)
                     return RedirectToAction("Index", "Home");
-                }
+
                 foreach (var error in result.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, error);
             }
 
             return View("Register", model);
