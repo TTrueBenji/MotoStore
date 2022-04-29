@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MotoStore.DatabaseFieldLimits;
+using MotoStore.DataBaseFieldLimits;
 using MotoStore.Models;
 
 namespace MotoStore

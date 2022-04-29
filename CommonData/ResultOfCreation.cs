@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CommonData
+﻿namespace CommonData
 {
     public enum ResultOfCreation
     {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MotoStore.Models;
 
-namespace MotoStore.DatabaseFieldLimits
+namespace MotoStore.DataBaseFieldLimits
 {
     public class OrderLimitation : IEntityTypeConfiguration<Order>
     {
