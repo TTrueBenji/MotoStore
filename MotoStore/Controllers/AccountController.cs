@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonData;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MotoStore.Enums;
 using MotoStore.MapConfigurations;
 using MotoStore.Models;
 using MotoStore.Services.Abstractions;
@@ -23,19 +21,22 @@ namespace MotoStore.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly StoreApplicationContext _db;
         private readonly IAccountService _accountService;
+        private readonly IEmailService _emailService;
 
         public AccountController(
-            StoreApplicationContext db, 
-            SignInManager<User> signInManager, 
-            UserManager<User> userManager, 
-            ILogger<AccountController> logger, 
-            IAccountService accountService)
+            StoreApplicationContext db,
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+            ILogger<AccountController> logger,
+            IAccountService accountService, 
+            IEmailService emailService)
         {
             _db = db;
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _accountService = accountService;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -43,7 +44,7 @@ namespace MotoStore.Controllers
         {
             return View(new LayoutViewModel
             {
-                RegisterViewModel = new RegisterViewModel(), 
+                RegisterViewModel = new RegisterViewModel(),
                 LoginViewModel = new LoginViewModel()
             });
         }
@@ -51,16 +52,16 @@ namespace MotoStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(LayoutViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 User user = model.RegisterViewModel.MapToUser();
                 // string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\UserFiles\\Avatars\\");
                 // _uploadService.Upload(path, model.File.FileName, model.File);
-            
+
                 // string imagePath = $"UserFiles/Avatars/{model.File.FileName}";
                 // user.PathToAvatar = imagePath;
                 var result = await _accountService.CreateAsync(user, model.RegisterViewModel.Password);
-                
+
                 if (result.Result is ResultOfCreation.Success)
                     return RedirectToAction("Index", "Home");
 
@@ -76,11 +77,11 @@ namespace MotoStore.Controllers
         {
             return View("Register", new LayoutViewModel
             {
-                RegisterViewModel = new RegisterViewModel(), 
-                LoginViewModel = new LoginViewModel{ReturnUrl = returnUrl}
+                RegisterViewModel = new RegisterViewModel(),
+                LoginViewModel = new LoginViewModel {ReturnUrl = returnUrl}
             });
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LayoutViewModel model)
@@ -93,33 +94,35 @@ namespace MotoStore.Controllers
                 ModelState.AddModelError("Email", "Неправильный логин");
                 return View("Login", model);
             }
-                
+
             SignInResult result = await _signInManager.PasswordSignInAsync(
                 user,
                 model.LoginViewModel.Password,
                 model.LoginViewModel.RememberMe,
                 false
             );
-            
+
             if (result.Succeeded)
             {
-                if (!string.IsNullOrEmpty(model.LoginViewModel.ReturnUrl) && Url.IsLocalUrl(model.LoginViewModel.ReturnUrl))
+                if (!string.IsNullOrEmpty(model.LoginViewModel.ReturnUrl) &&
+                    Url.IsLocalUrl(model.LoginViewModel.ReturnUrl))
                     return Redirect(model.LoginViewModel.ReturnUrl);
-
+                await _emailService.SendEmailAsync("pasko.vitaliy24@gmail.com", "Тема письма", "ЙО!");
                 return RedirectToAction("Index", "Home");
             }
-            
+
             ModelState.AddModelError("Password", "Неправильный пароль");
-            
+
             return View("Login", model);
         }
+
         [HttpGet]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-        
+
         public List<User> SearchUsers(string criterion, string filter)
         {
             List<User> users = _db.Users.ToList();

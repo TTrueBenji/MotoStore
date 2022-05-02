@@ -11,7 +11,7 @@ namespace MotoStore.Extensions
     {
         public static void AddInfrastructureServices(
             this IServiceCollection services,
-            IConfiguration _)
+            IConfiguration configuration)
         {
             //Services
             services.AddScoped<IFileUploadService, FileUploadService>();
@@ -20,6 +20,16 @@ namespace MotoStore.Extensions
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IManagerPersonalAreService, ManagerPersonalAreaService>();
             services.AddScoped<IUserService, UserService>();
+            
+            //Email Config
+            string host = configuration.GetValue<string>("EmailSender:Host");
+            int port = configuration.GetValue<int>("EmailSender:Port");
+            string from = configuration.GetValue<string>("EmailSender:From");
+            string password = configuration.GetValue<string>("EmailSender:Password");
+            bool useSsl = configuration.GetValue<bool>("EmailSender:UseSSL");
+            
+            services.AddSingleton<IEmailService, EmailService>(_ => 
+                new EmailService(host, port, from, password, useSsl));
             
             //Repositories
             services.AddScoped<IPositionRepository, PositionRepository>();
