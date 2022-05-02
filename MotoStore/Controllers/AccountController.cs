@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CommonData;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,8 @@ namespace MotoStore.Controllers
         private readonly StoreApplicationContext _db;
         private readonly IAccountService _accountService;
         private readonly IEmailService _emailService;
+        private readonly IDefaultAvatarService _defaultAvatarService;
+        private readonly IWebHostEnvironment _environment;
 
         public AccountController(
             StoreApplicationContext db,
@@ -29,7 +32,9 @@ namespace MotoStore.Controllers
             UserManager<User> userManager,
             ILogger<AccountController> logger,
             IAccountService accountService, 
-            IEmailService emailService)
+            IEmailService emailService, 
+            IDefaultAvatarService defaultAvatarService, 
+            IWebHostEnvironment environment)
         {
             _db = db;
             _signInManager = signInManager;
@@ -37,6 +42,8 @@ namespace MotoStore.Controllers
             _logger = logger;
             _accountService = accountService;
             _emailService = emailService;
+            _defaultAvatarService = defaultAvatarService;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -55,15 +62,20 @@ namespace MotoStore.Controllers
             if (ModelState.IsValid)
             {
                 User user = model.RegisterViewModel.MapToUser();
+                
                 // string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\UserFiles\\Avatars\\");
                 // _uploadService.Upload(path, model.File.FileName, model.File);
-
-                // string imagePath = $"UserFiles/Avatars/{model.File.FileName}";
-                // user.PathToAvatar = imagePath;
+                user.PathToAvatar = _defaultAvatarService.GetPathToDefaultAvatar(_environment);// string imagePath = $"UserFiles/Avatars/{model.File.FileName}";
                 var result = await _accountService.CreateAsync(user, model.RegisterViewModel.Password);
 
                 if (result.Result is ResultOfCreation.Success)
+                {
+                    await _emailService.SendEmailAsync(
+                        model.RegisterViewModel.Email, 
+                        $"Добро пожаловать, {model.RegisterViewModel.UserName}!", 
+                        "ЙО!");
                     return RedirectToAction("Index", "Home");
+                }
 
                 foreach (var error in result.Errors)
                     ModelState.AddModelError(string.Empty, error);

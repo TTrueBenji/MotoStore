@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting.Internal;
 using MotoStore.Repositories;
 using MotoStore.Repositories.Abstractions;
 using MotoStore.Services;
@@ -21,6 +22,10 @@ namespace MotoStore.Extensions
             services.AddScoped<IManagerPersonalAreService, ManagerPersonalAreaService>();
             services.AddScoped<IUserService, UserService>();
             
+            string pathToDefaultAvatar = configuration.GetValue<string>("PathToDefaultAvatar:Path");
+            services.AddScoped<IDefaultAvatarService, DefaultAvatarService>(_ 
+                => new DefaultAvatarService(pathToDefaultAvatar));
+            
             //Email Config
             string host = configuration.GetValue<string>("EmailSender:Host");
             int port = configuration.GetValue<int>("EmailSender:Port");
@@ -28,7 +33,7 @@ namespace MotoStore.Extensions
             string password = configuration.GetValue<string>("EmailSender:Password");
             bool useSsl = configuration.GetValue<bool>("EmailSender:UseSSL");
             
-            services.AddSingleton<IEmailService, EmailService>(_ => 
+            services.AddTransient<IEmailService, EmailService>(_ => 
                 new EmailService(host, port, from, password, useSsl));
             
             //Repositories

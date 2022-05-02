@@ -12,10 +12,10 @@ namespace MotoStore.MapConfigurations
             {
                 Email = model.Email,
                 UserName = model.UserName,
-                // PathToAvatar = model.PathToAvatar,
                 PhoneNumber = model.PhoneNumber,
                 Address = model.Address,
-                CreationDateTime = DateTime.Now
+                CreationDateTime = DateTime.Now,
+                City = model.City
             };
         }
     }
