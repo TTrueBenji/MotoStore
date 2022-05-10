@@ -12,7 +12,6 @@ namespace MotoStore.DataBaseFieldLimits
             builder.Property(o => o.Id).ValueGeneratedOnAdd();
             builder.Property(o => o.UserId).IsRequired();
             builder.Property(o => o.PositionId).IsRequired();
-            builder.HasIndex(o => new {o.PositionId, o.UserId}).IsUnique();
         }
     }
 }
