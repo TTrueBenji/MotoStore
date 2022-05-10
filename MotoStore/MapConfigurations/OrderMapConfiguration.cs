@@ -15,7 +15,7 @@ namespace MotoStore.MapConfigurations
                 {
                     OrderDate = order.CreationDateTime,
                     PositionInfoViewModel = PositionToPositionInfoViewModel(order.Position)
-                });
+                }).ToList();
         }
 
         private static PositionInfoViewModel PositionToPositionInfoViewModel(Position position)

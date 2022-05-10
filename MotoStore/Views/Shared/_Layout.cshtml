@@ -110,10 +110,7 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <form asp-action="Register" asp-controller="Account" method="post" asp-antiforgery="true" class="row g-3">
-                            @await Html.PartialAsync("PartialViews/Account/RegisterPartialView", Model)
-                            <button class="btn btn-warning" type="submit">Отправить</button>
-                        </form>
+                        @await Html.PartialAsync("PartialViews/Account/RegisterPartialView", Model)
                     </div>
                 </div>
             </div>
@@ -146,7 +143,6 @@
         crossorigin="anonymous"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="https://kit.fontawesome.com/e289fe644c.js" crossorigin="anonymous"></script>
-
 @await RenderSectionAsync("Scripts", false)
 </body>
 </html>

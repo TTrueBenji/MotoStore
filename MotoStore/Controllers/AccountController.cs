@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonData;
@@ -25,6 +26,7 @@ namespace MotoStore.Controllers
         private readonly IEmailService _emailService;
         private readonly IDefaultAvatarService _defaultAvatarService;
         private readonly IWebHostEnvironment _environment;
+        private readonly IFileUploadService _fileUploadService;
 
         public AccountController(
             StoreApplicationContext db,
@@ -34,7 +36,8 @@ namespace MotoStore.Controllers
             IAccountService accountService, 
             IEmailService emailService, 
             IDefaultAvatarService defaultAvatarService, 
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment, 
+            IFileUploadService fileUploadService)
         {
             _db = db;
             _signInManager = signInManager;
@@ -44,6 +47,7 @@ namespace MotoStore.Controllers
             _emailService = emailService;
             _defaultAvatarService = defaultAvatarService;
             _environment = environment;
+            _fileUploadService = fileUploadService;
         }
 
         [HttpGet]
@@ -57,15 +61,25 @@ namespace MotoStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(LayoutViewModel model)
         {
             if (ModelState.IsValid)
             {
                 User user = model.RegisterViewModel.MapToUser();
                 
-                // string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\UserFiles\\Avatars\\");
-                // _uploadService.Upload(path, model.File.FileName, model.File);
-                user.PathToAvatar = _defaultAvatarService.GetPathToDefaultAvatar(_environment);// string imagePath = $"UserFiles/Avatars/{model.File.FileName}";
+                if (model.RegisterViewModel.File is null)
+                    user.PathToAvatar = _defaultAvatarService.GetPathToDefaultAvatar(_environment);
+                else
+                {
+                    var fileName = FileNameModifier(user.UserName, model.RegisterViewModel.File.FileName);
+                    int pos = fileName.LastIndexOf('.');
+                    string fileDirectoryName = fileName.Substring(0, pos);
+                    string path = Path.Combine(_environment.ContentRootPath, $"wwwroot\\UserFiles\\Avatars\\{fileDirectoryName}");
+                    await _fileUploadService.Upload(path, fileName, model.RegisterViewModel.File);
+                    user.PathToAvatar = $"UserFiles/Avatars/{fileDirectoryName}/{fileName}";
+                }
+                
                 var result = await _accountService.CreateAsync(user, model.RegisterViewModel.Password);
 
                 if (result.Result is ResultOfCreation.Success)
@@ -78,7 +92,7 @@ namespace MotoStore.Controllers
                 }
 
                 foreach (var error in result.Errors)
-                    ModelState.AddModelError(string.Empty, error);
+                    ModelState.AddModelError(string.Empty, $"Логин {user.UserName} занят.");
             }
 
             return View("Register", model);
@@ -119,7 +133,7 @@ namespace MotoStore.Controllers
                 if (!string.IsNullOrEmpty(model.LoginViewModel.ReturnUrl) &&
                     Url.IsLocalUrl(model.LoginViewModel.ReturnUrl))
                     return Redirect(model.LoginViewModel.ReturnUrl);
-                await _emailService.SendEmailAsync("pasko.vitaliy24@gmail.com", "Тема письма", "ЙО!");
+                // await _emailService.SendEmailAsync("pasko.vitaliy24@gmail.com", "Тема письма", "ЙО!");
                 return RedirectToAction("Index", "Home");
             }
 
@@ -149,6 +163,11 @@ namespace MotoStore.Controllers
             }
 
             return users;
+        }
+        
+        private string FileNameModifier(string login, string fileName)
+        {
+            return login + "." + fileName.Split('.')[1];
         }
     }
 }

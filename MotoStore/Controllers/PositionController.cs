@@ -19,18 +19,15 @@ namespace MotoStore.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IHostEnvironment _environment;
-        private readonly IFileUploadService _fileUploadService;
         private readonly IPositionService _positionService;
         
 
         public PositionController(
             IHostEnvironment environment,
-            IFileUploadService fileUploadService, 
             ILogger<AccountController> logger, 
             IPositionService positionService)
         {
             _environment = environment;
-            _fileUploadService = fileUploadService;
             _logger = logger;
             _positionService = positionService;
         }
@@ -47,24 +44,11 @@ namespace MotoStore.Controllers
         public async Task<IActionResult> Add(LayoutViewModel model)
         {
             //TODO: Добавить Try Catch и страницу ошибок.
-            if (ModelState.IsValid)
-            {
-                string directoryName = DirectoryNameModifier(model.CreatePositionViewModel.Model);
-                string path = Path.Combine(_environment.ContentRootPath,
-                    $"wwwroot\\Images\\Positions\\{directoryName}\\");
-                string fileName = FileNameModifier(model.CreatePositionViewModel.Model,
-                    model.CreatePositionViewModel.Image.FileName);
-                await _fileUploadService.Upload(path,  fileName, model.CreatePositionViewModel.Image);
-                var position = model.CreatePositionViewModel.MapToPosition();
-                string imagePath = $"Images/Positions/{directoryName}/{fileName}";
-                position.PathToImage = imagePath;
-                _positionService.CreatePosition(position);
-                
-                var positions = _positionService.GetPositions().ToList();
-                return RedirectToAction("All", positions);
-            }
+            if (!ModelState.IsValid) return View(model);
+            await _positionService.CreatePosition(model.CreatePositionViewModel, _environment);
+            var positions = _positionService.GetPositions().ToList();
+            return RedirectToAction("All", positions);
 
-            return View(model);
         }
 
         [HttpGet]
@@ -111,30 +95,6 @@ namespace MotoStore.Controllers
             };
             TempData["model"] = JsonSerializer.Serialize(layoutModel);
             return RedirectToAction("All", "Position");
-        }
-
-        [NonAction]
-        private string FileNameModifier(string model, string fileName)
-        {
-            string modelName = DirectoryNameModifier(model);
-            return modelName + "." + fileName.Split('.')[1];
-        }
-        
-        [NonAction]
-        private string DirectoryNameModifier(string modelName)
-        {
-            var modelNameParts = modelName.Split();
-            string modifiedName = string.Empty;
-
-            for (int i = 0; i < modelNameParts.Length; i++)
-            {
-                if (i == 0)
-                    modifiedName += modelNameParts[i];
-                else
-                    modifiedName += "_" + modelNameParts[i];
-            }
-
-            return modifiedName;
         }
     }
 }

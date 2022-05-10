@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MotoStore.Exceptions;
 using MotoStore.Models;
 using MotoStore.Repositories.Abstractions;
@@ -24,7 +25,7 @@ namespace MotoStore.Services
 
         public void CancelOrder(string id) => _orderRepository.CancelOrderById(id);
 
-        public IEnumerable<Order> GetOrdersByUserId(string id) => _orderRepository.GetOrdersByUserId(id);
+        public IEnumerable<Order> GetOrdersByUserId(string id) => _orderRepository.GetOrdersByUserId(id).ToList();
         
         public Order GetPositionById(string id)
         {
