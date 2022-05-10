@@ -15,5 +15,6 @@ namespace MotoStore.ViewModels.Layout
         public OrderCreateViewModel OrderCreateViewModel { get; set; }
         public List<OrderViewModel> OrderViewModels { get; set; }
         public List<User> Users { get; set; }
+        public LiveOrderViewModel LiveOrderViewModel { get; set; }
     }
 }

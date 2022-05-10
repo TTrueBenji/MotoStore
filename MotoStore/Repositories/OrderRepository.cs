@@ -46,6 +46,23 @@ namespace MotoStore.Repositories
             _db.SaveChanges();
         }
 
+        public void CreateLiveOrder(LiveOrder liveOrder)
+        {
+            _db.LiveOrders.Add(liveOrder);
+            _db.SaveChanges();
+        }
+
+        public void UpdateLiveOrder(LiveOrder liveOrder)
+        {
+            _db.LiveOrders.Update(liveOrder);
+            _db.SaveChanges();
+        }
+
+        public LiveOrder GetLiveOrderById(string orderId)
+        {
+            return _db.LiveOrders.FirstOrDefault(o => o.OrderId == orderId);
+        }
+
         public IEnumerable<Order> GetOrdersByUserId(string id) => 
             _db.Orders.Where(o => o.UserId == id);
     }

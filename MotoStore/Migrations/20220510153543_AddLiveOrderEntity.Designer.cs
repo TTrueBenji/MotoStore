@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotoStore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MotoStore.Migrations
 {
     [DbContext(typeof(StoreApplicationContext))]
-    partial class StoreApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220510153543_AddLiveOrderEntity")]
+    partial class AddLiveOrderEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,7 +154,6 @@ namespace MotoStore.Migrations
             modelBuilder.Entity("MotoStore.Models.LiveOrder", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<string>("Addres")
@@ -161,22 +162,16 @@ namespace MotoStore.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Confirmed")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("ContactNumber")
                         .HasColumnType("text");
 
                     b.Property<string>("OrderId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PositionId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -196,9 +191,6 @@ namespace MotoStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Confirmed")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime>("CreationDateTime")
                         .HasColumnType("timestamp without time zone");
 
@@ -206,9 +198,6 @@ namespace MotoStore.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsCanceled")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsCheckouted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("PositionId")
@@ -395,21 +384,15 @@ namespace MotoStore.Migrations
                 {
                     b.HasOne("MotoStore.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("MotoStore.Models.Position", "Position")
                         .WithMany()
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PositionId");
 
                     b.HasOne("MotoStore.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Order");
 

@@ -2,7 +2,6 @@
 using System.Linq;
 using MotoStore.Models;
 using MotoStore.ViewModels.Order;
-using MotoStore.ViewModels.Positions;
 
 namespace MotoStore.MapConfigurations
 {
@@ -13,22 +12,26 @@ namespace MotoStore.MapConfigurations
             return orders.Select(
                 order => new OrderViewModel
                 {
+                    OrderId = order.Id,
                     OrderDate = order.CreationDateTime,
-                    PositionInfoViewModel = PositionToPositionInfoViewModel(order.Position)
+                    PositionInfoViewModel = order.Position.MapToPositionInfoViewModel(),
+                    IsCheckouted = order.IsCheckouted,
+                    Confirmed = order.Confirmed
                 }).ToList();
         }
 
-        private static PositionInfoViewModel PositionToPositionInfoViewModel(Position position)
+        public static LiveOrderViewModel MapToOrderCheckoutViewModel(this Order order)
         {
-            return new PositionInfoViewModel
+            return new LiveOrderViewModel
             {
-                Id = position.Id,
-                Manufacturer = position.Manufacturer,
-                EngineCapacity = position.EngineCapacity,
-                Model = position.Model,
-                Price = position.Price,
-                NumberOfCycles = position.NumberOfCycles,
-                PathToImage = position.PathToImage
+                Order = order,
+                DeliveryAddress = new DeliveryAddressViewModel
+                {
+                    Address = order.User.Address,
+                    ContactNumber = order.User.PhoneNumber
+                },
+                User = order.User,
+                PositionId = order.PositionId
             };
         }
     }

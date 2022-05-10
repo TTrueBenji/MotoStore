@@ -12,10 +12,10 @@ namespace MotoStore.Services
             UserManager<User> userManager)
         {
             PasswordHasher<User> hasher = new ();
-            string managerEmail = "manager@manager.com";
+            string managerEmail = "manager@pubfb.com";
             string managerPassword = "manager";
             
-            string adminEmail = "admin@admin.com";
+            string adminEmail = "superadmin@pubfb.com";
             string adminPassword = "admin";
 
             var roles = new [] { Roles.Manager.ToString(), Roles.User.ToString(), Roles.Admin.ToString() };

@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MotoStore.MapConfigurations;
 using MotoStore.Models;
 using MotoStore.Services.Abstractions;
-using MotoStore.ViewModels.Account;
 using MotoStore.ViewModels.Layout;
 
 namespace MotoStore.Controllers
@@ -37,6 +37,52 @@ namespace MotoStore.Controllers
             _orderService.CreateOrder(order);
             
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Checkout(string orderId)
+        {
+            Order order = _orderService.GetOrderById(orderId);
+            LayoutViewModel layoutViewModel = new LayoutViewModel
+            {
+                LiveOrderViewModel = order.MapToOrderCheckoutViewModel()
+            };
+            return View(layoutViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Checkout(LayoutViewModel layoutViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _logger.LogInformation("{Controller} Данные: {@Data}",
+                        typeof(OrderController), layoutViewModel);
+                    _orderService.CreateLiveOrder(layoutViewModel.LiveOrderViewModel);
+                    return RedirectToAction(
+                        "Index",
+                        "UserPersonalArea",
+                        new {userId = layoutViewModel.LiveOrderViewModel.UserId});
+                }
+
+                _logger.LogWarning("{Controller} модель не прошла валидацию. Данные: {@Data}",
+                    typeof(OrderController), layoutViewModel);
+                return View(layoutViewModel);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("{Controller} ошибка {@Message}. Данные: {@Data}",
+                    typeof(OrderController), e.Message, layoutViewModel);
+                return View(layoutViewModel);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmDelivery(string orderId)
+        {
+            _orderService.ConfirmLiveOrder(orderId);
+            return RedirectToAction("Index", "UserPersonalArea", new {userId = _userManager.GetUserId(User)});
         }
     }
 }
