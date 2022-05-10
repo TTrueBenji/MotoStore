@@ -1,4 +1,4 @@
-﻿@model LayoutViewModel
+﻿@model MotoStore.ViewModels.Layout.LayoutViewModel
 
 @{
     ViewBag.Title = "title";
@@ -9,7 +9,12 @@
     <div class="text-center my-5">
         <h2>Добавить позицию</h2>
     </div>
-    <form asp-action="Add" asp-controller="Position" enctype="multipart/form-data" method="post" class="col-md-9 mx-auto">
+    <form asp-action="Add" 
+          asp-controller="Position" 
+          enctype="multipart/form-data" 
+          method="post" 
+          class="col-md-9 mx-auto" 
+          asp-antiforgery="true">
         <div class="form-floating my-2">
             <input type="text" asp-for="@Model.CreatePositionViewModel.Manufacturer" class="form-control" id="inputManufacturer">
             <label for="inputManufacturer" class="form-label" asp-for="@Model.CreatePositionViewModel.Manufacturer"></label>

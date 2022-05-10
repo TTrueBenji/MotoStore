@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MotoStore.ViewModels;
 using MotoStore.ViewModels.Account;
+using MotoStore.ViewModels.Layout;
 
 namespace MotoStore.Controllers
 {

@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http;
 using MotoStore.Enums;
 
@@ -28,8 +26,7 @@ namespace MotoStore.ViewModels.Positions
         [Range(50, 5000, ErrorMessage = "Некорректный объем")]
         public int EngineCapacity { get; set; }
         
-        [NotMapped]
-        [Attributes.Validation.FileExtensions("jpg,png", ErrorMessage = "Некорректный формат файла")]
+        [Attributes.Validation.FileExtensions("jpg, png", ErrorMessage = "Некорректный формат файла")]
         [DisplayName("Загрузить изображение")]
         public IFormFile Image { get; set; }
     }

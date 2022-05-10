@@ -10,5 +10,9 @@ namespace MotoStore.Models
         public virtual User User { get; set; }
         public string PositionId { get; set; }
         public virtual Position Position { get; set; }
+        public bool Deleted { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsCheckouted { get; set; }
+        public bool Confirmed { get; set; }
     }
 }

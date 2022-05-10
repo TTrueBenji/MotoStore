@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model MotoStore.ViewModels.Layout.LayoutViewModel
+@inject UserManager<User> _userManager;
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container text-center my-5">
+    <h2>Ваши заказы</h2>
+</div>
+<div class="container">
+    <div class="row flex-wrap">
+        @foreach (var order in @Model.OrderViewModels)
+        {
+            <div class="col-sm-6 mx-auto my-3">
+                <div class="card">
+                    <div class="text-center">
+                        <img src="~/@order.PositionInfoViewModel.PathToImage"
+                             class="card-img-top w-50" alt="@order.PositionInfoViewModel.Model">
+                    </div>
+                    <div class="card-body">
+                        <p>@order.PositionInfoViewModel.Manufacturer</p>
+                        <p>@order.PositionInfoViewModel.Model</p>
+                        <p>@order.PositionInfoViewModel.EngineCapacity</p>
+                        <p>@order.PositionInfoViewModel.NumberOfCycles</p>
+                        <p>@order.OrderDate</p>
+                        <div class="text-center my-3">
+                            @if (!order.IsCheckouted)
+                            {
+                                <a asp-action="Checkout"
+                                   asp-controller="Order"
+                                   asp-route-orderId="@order.OrderId" class="btn btn-warning w-25">
+                                    Оформить заказ
+                                </a>
+                            }
+                            else if (order.IsCheckouted && !order.Confirmed)
+                            {
+                                <p class="text-warning my-2">Заказ оформлен</p>
+                                <a asp-action="ConfirmDelivery"
+                                   asp-controller="Order"
+                                   asp-route-orderId="@order.OrderId" class="btn btn-warning w-50">
+                                    Подтвердить доставку
+                                </a>
+                            }
+                            else
+                            {
+                                <p class="text-warning">Заказ доставлен</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
