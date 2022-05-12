@@ -48,7 +48,9 @@
         <label for="inputImage" class="form-label" asp-for="@Model.RegisterViewModel.File"></label>
         <span class="text-warning" asp-validation-for="@Model.RegisterViewModel.File"></span>
     </div>
-    <button class="btn btn-warning w-25" type="submit">Отправить</button>
+    <div class="button-wrapper text-center">
+        <button class="btn btn-warning register-btn" type="submit">Отправить</button>
+    </div>
 </form>
 @section Scripts
 {
