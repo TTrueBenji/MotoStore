@@ -11,5 +11,6 @@ namespace MotoStore.ViewModels.Order
         public virtual User User { get; set; }
         public DeliveryAddressViewModel DeliveryAddress { get; set; }
         public string PositionId { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -12,10 +12,12 @@
                 <p>@Model.AllPositionsViewModel.PositionInfo.Model</p>
                 <p>@Model.AllPositionsViewModel.PositionInfo.EngineCapacity</p>
                 <p>@Model.AllPositionsViewModel.PositionInfo.NumberOfCycles</p>
+                <p>@Model.AllPositionsViewModel.PositionInfo.Price</p>
                 @if (User.Identity is {IsAuthenticated: true } && User.IsInRole(Roles.User.ToString()))
                 {
                     <form asp-action="Create" asp-controller="Order" method="post" asp-antiforgery="true">
                         <input type="hidden" asp-for="OrderCreateViewModel.PositionId" value="@Model.AllPositionsViewModel.PositionInfo.Id">
+                        <input type="hidden" asp-for="OrderCreateViewModel.Price" value="@Model.AllPositionsViewModel.PositionInfo.Price">
                         <button type="submit" class="btn btn-outline-warning my-1">Заказать</button>
                     </form>
                 }

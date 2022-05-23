@@ -16,7 +16,8 @@ namespace MotoStore.MapConfigurations
                     OrderDate = order.CreationDateTime,
                     PositionInfoViewModel = order.Position.MapToPositionInfoViewModel(),
                     IsCheckouted = order.IsCheckouted,
-                    Confirmed = order.Confirmed
+                    Confirmed = order.Confirmed,
+                    Price = order.Price
                 }).ToList();
         }
 

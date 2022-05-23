@@ -40,6 +40,11 @@
             <label for="inputImage" class="form-label" asp-for="@Model.CreatePositionViewModel.Image"></label>
             <span class="text-warning" asp-validation-for="@Model.CreatePositionViewModel.Image"></span>
         </div>
+        <div class="form-floating my-2">
+            <input type="text" asp-for="@Model.CreatePositionViewModel.Price" class="form-control" id="inputPrice">
+            <label for="inputPrice" class="form-label" asp-for="@Model.CreatePositionViewModel.Price"></label>
+            <span class="text-warning" asp-validation-for="@Model.CreatePositionViewModel.Price"></span>
+        </div>
         <button class="btn btn-warning my-1" type="submit">Добавить</button>
     </form>
 </div>

@@ -7,10 +7,14 @@
     Layout = "_Layout";
 }
 
-<div class="container text-center my-5">
+<div class="container text-center my-4">
     <h2>Ваши заказы</h2>
 </div>
-<div class="container">
+<div class="container py-2">
+    <div class="wrapper position-relative py-4">
+        <a class="btn btn-outline-warning help-btn position-absolute" 
+           asp-action="GetHelp" asp-controller="Order">Связаться с менеджером</a>
+    </div>
     <div class="row flex-wrap">
         @foreach (var order in @Model.OrderViewModels)
         {
@@ -26,6 +30,7 @@
                         <p>@order.PositionInfoViewModel.EngineCapacity</p>
                         <p>@order.PositionInfoViewModel.NumberOfCycles</p>
                         <p>@order.OrderDate</p>
+                        <p>@order.Price</p>
                         <div class="text-center my-3">
                             @if (!order.IsCheckouted)
                             {

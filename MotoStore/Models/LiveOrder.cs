@@ -13,5 +13,6 @@
         public string PositionId { get; set; }
         public virtual Position Position { get; set; }
         public bool Confirmed { get; set; }
+        public decimal Price { get; set; }
     }
 }

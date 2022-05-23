@@ -12,9 +12,19 @@
 <div class="container">
     <form asp-action="Checkout" asp-controller="Order" method="post" class="col-md-9 mx-auto" asp-antiforgery="true">
         <div class="form-floating my-2">
-            <input type="text" 
-                   asp-for="@Model.LiveOrderViewModel.DeliveryAddress.Address" 
-                   class="form-control" 
+            <input type="text"
+                   asp-for="@Model.LiveOrderViewModel.Price"
+                   class="form-control"
+                   id="inputPrice"
+                   value="@Model.LiveOrderViewModel.Price тенге"
+                   disabled>
+            <label for="inputPrice" class="form-label" asp-for="@Model.LiveOrderViewModel.Price"></label>
+            <span class="text-warning" asp-validation-for="@Model.LiveOrderViewModel.Price"></span>
+        </div>
+        <div class="form-floating my-2">
+            <input type="text"
+                   asp-for="@Model.LiveOrderViewModel.DeliveryAddress.Address"
+                   class="form-control"
                    id="inputAddress"
                    value="@Model.LiveOrderViewModel.DeliveryAddress.Address">
             <label for="inputAddress" class="form-label" asp-for="@Model.LiveOrderViewModel.DeliveryAddress.Address"></label>
@@ -37,9 +47,9 @@
             <label for="inputComment" class="form-label" asp-for="@Model.LiveOrderViewModel.DeliveryAddress.Comment"></label>
             <span class="text-warning" asp-validation-for="@Model.LiveOrderViewModel.DeliveryAddress.Comment"></span>
         </div>
-        <input type="text" hidden asp-for="LiveOrderViewModel.UserId" value="@Model.LiveOrderViewModel.User.Id">  
-        <input type="text" hidden asp-for="LiveOrderViewModel.OrderId" value="@Model.LiveOrderViewModel.Order.Id">  
-        <input type="text" hidden asp-for="LiveOrderViewModel.PositionId" value="@Model.LiveOrderViewModel.PositionId">  
+        <input type="text" hidden asp-for="LiveOrderViewModel.UserId" value="@Model.LiveOrderViewModel.User.Id">
+        <input type="text" hidden asp-for="LiveOrderViewModel.OrderId" value="@Model.LiveOrderViewModel.Order.Id">
+        <input type="text" hidden asp-for="LiveOrderViewModel.PositionId" value="@Model.LiveOrderViewModel.PositionId">
         <button class="btn btn-warning my-1" type="submit">Добавить</button>
     </form>
 </div>

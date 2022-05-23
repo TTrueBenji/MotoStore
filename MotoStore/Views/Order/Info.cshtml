@@ -1,0 +1,26 @@
+﻿@using CommonData.Enums
+@using Microsoft.AspNetCore.Identity
+@model LayoutViewModel
+@inject UserManager<User> _userManager
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container text-center">
+    <div class="inner">
+        <h2 class="my-5">@Model.MessageViewModel.Message</h2>
+            @if (@Model.MessageViewModel.Status is StatusCodes.Succsess)
+            {
+                <a class="btn btn-warning" 
+                   asp-action="Index" 
+                   asp-controller="UserPersonalArea" 
+                   asp-route-userId="@_userManager.GetUserId(User)">В кабинет</a>
+            }
+            else
+            {
+                <a class="btn btn-danger" asp-action="GetHelp" asp-controller="Order">Связаться</a>
+            }
+    </div>
+</div>

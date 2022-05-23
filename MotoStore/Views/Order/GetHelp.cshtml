@@ -1,0 +1,43 @@
+﻿@model LayoutViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<form asp-action="SendMessage" asp-controller="Order" method="post" class="col-md-9 mx-auto help-form" asp-antiforgery="true">
+
+    <div class="form-floating my-2">
+        <input type="text"
+               asp-for="@Model.ReportViewModel.User.Id"
+               class="form-control"
+               id="inputPrice"
+               value="@Model.ReportViewModel.User.Id"
+               hidden>
+        <input type="text"
+               asp-for="@Model.ReportViewModel.User.UserName"
+               class="form-control"
+               value="@Model.ReportViewModel.User.UserName"
+               hidden>
+        <input type="text"
+               asp-for="@Model.ReportViewModel.User.UserEmail"
+               class="form-control"
+               value="@Model.ReportViewModel.User.UserEmail"
+               hidden>
+        <input type="text"
+               asp-for="@Model.ReportViewModel.User.UserPhone"
+               class="form-control"
+               value="@Model.ReportViewModel.User.UserPhone"
+               hidden>
+    </div>
+    <div class="form-floating my-2">
+        <textarea type="text"
+                   asp-for="@Model.ReportViewModel.Message"
+                   class="form-control col-md-12 message"
+rows="100"
+                   id="inputReport"></textarea>
+        <label for="inputReport" class="form-label" asp-for="@Model.ReportViewModel.Message"></label>
+        <span class="text-warning" asp-validation-for="@Model.ReportViewModel.Message"></span>
+    </div>
+    <button class="btn btn-warning my-1" type="submit">Отправить</button>
+</form>
