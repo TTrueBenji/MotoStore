@@ -46,7 +46,7 @@ namespace MotoStore.Services
             if (positionViewModel is null)
                 throw new EntityNotFoundException(nameof(Position));
             var test = environment.ContentRootPath;
-            string directoryName = DirectoryNameModifier(positionViewModel.Model);
+            string directoryName = DirectoryNameModifier(positionViewModel.Manufacturer);
             string path = Path.Combine(environment.ContentRootPath,
                 $"wwwroot\\Images\\Positions\\{directoryName}\\");
             string fileName = FileNameModifier(positionViewModel.Model, positionViewModel.Image.FileName);
