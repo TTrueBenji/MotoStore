@@ -3,6 +3,7 @@ using MotoStore.Models;
 using MotoStore.ViewModels.Account;
 using MotoStore.ViewModels.Order;
 using MotoStore.ViewModels.Positions;
+using MotoStore.ViewModels.UsersPersonalArea;
 
 namespace MotoStore.ViewModels.Layout
 {
@@ -16,5 +17,8 @@ namespace MotoStore.ViewModels.Layout
         public List<OrderViewModel> OrderViewModels { get; set; }
         public List<User> Users { get; set; }
         public LiveOrderViewModel LiveOrderViewModel { get; set; }
+        public ReportViewModel ReportViewModel { get; set; }
+        public MessageViewModel MessageViewModel { get; set; }
+        public List<UsersPersonalAreaViewModel> ManagerPersonalAreaUsers { get; set; }
     }
 }

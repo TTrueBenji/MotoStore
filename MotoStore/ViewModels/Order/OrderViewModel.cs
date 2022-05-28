@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using MotoStore.Models;
 using MotoStore.ViewModels.Positions;
 
 namespace MotoStore.ViewModels.Order
@@ -12,5 +10,6 @@ namespace MotoStore.ViewModels.Order
         public bool Confirmed { get; set; }
         public PositionInfoViewModel PositionInfoViewModel { get; set; }
         public DateTime OrderDate { get; set; }
+        public decimal Price { get; set; }
     }
 }

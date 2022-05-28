@@ -1,5 +1,8 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+h1, h2{
+  color: white;
+}
 button {
   padding: 0;
   border: none;
@@ -12,6 +15,9 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+}
+body{
+  background-color: #343a40;
 }
 .logo, .user{
   font-size: 20px;
@@ -88,4 +94,40 @@ body {
 }
 .avatar{
   width: 50px;
+}
+
+.register-btn{
+  width: 50%;
+}
+.inner{
+  padding: 300px 0;
+}
+.help-btn{
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+.help-form{
+  margin-top: 200px;
+}
+
+/*Прелоадер*/
+
+div#spinner
+{
+  display: none;
+  width:100px;
+  height: 100px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background:url(Images/Preloader/spinner.gif) no-repeat center #fff;
+  text-align:center;
+  padding:10px;
+  font:normal 16px Tahoma, Geneva, sans-serif;
+  border:1px solid #666;
+  margin-left: -50px;
+  margin-top: -50px;
+  z-index:2;
+  overflow: auto;
 }

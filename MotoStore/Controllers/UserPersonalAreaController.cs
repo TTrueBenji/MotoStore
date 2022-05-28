@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MotoStore.MapConfigurations;
 using MotoStore.Models;
 using MotoStore.Services.Abstractions;
-using MotoStore.ViewModels.Account;
 using MotoStore.ViewModels.Layout;
 
 namespace MotoStore.Controllers
@@ -15,14 +13,11 @@ namespace MotoStore.Controllers
     public class UserPersonalAreaController : Controller
     {
         private readonly IOrderService _orderService;
-        private readonly UserManager<User> _userManager;
 
         public UserPersonalAreaController(
-            IOrderService orderService, 
-            UserManager<User> userManager)
+            IOrderService orderService)
         {
             _orderService = orderService;
-            _userManager = userManager;
         }
 
         [HttpGet]

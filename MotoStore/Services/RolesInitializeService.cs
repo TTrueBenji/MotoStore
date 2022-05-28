@@ -12,7 +12,7 @@ namespace MotoStore.Services
             UserManager<User> userManager)
         {
             PasswordHasher<User> hasher = new ();
-            string managerEmail = "manager@pubfb.com";
+            string managerEmail = "pasko.vitaliy24@gmail.com";
             string managerPassword = "manager";
             
             string adminEmail = "superadmin@pubfb.com";

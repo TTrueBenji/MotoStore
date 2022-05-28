@@ -7,7 +7,7 @@ namespace MotoStore.MapConfigurations
 {
     public static class OrderMapConfiguration
     {
-        public static IEnumerable<OrderViewModel> MapToOrderViewModels(this IEnumerable<Order> orders)
+        public static List<OrderViewModel> MapToOrderViewModels(this IEnumerable<Order> orders)
         {
             return orders.Select(
                 order => new OrderViewModel
@@ -16,7 +16,8 @@ namespace MotoStore.MapConfigurations
                     OrderDate = order.CreationDateTime,
                     PositionInfoViewModel = order.Position.MapToPositionInfoViewModel(),
                     IsCheckouted = order.IsCheckouted,
-                    Confirmed = order.Confirmed
+                    Confirmed = order.Confirmed,
+                    Price = order.Price
                 }).ToList();
         }
 

@@ -14,5 +14,6 @@ namespace MotoStore.Models
         public bool IsCanceled { get; set; }
         public bool IsCheckouted { get; set; }
         public bool Confirmed { get; set; }
+        public decimal Price { get; set; }
     }
 }

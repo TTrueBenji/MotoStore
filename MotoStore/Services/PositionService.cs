@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Castle.Core.Internal;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using MotoStore.Exceptions;
 using MotoStore.MapConfigurations;
@@ -44,7 +45,7 @@ namespace MotoStore.Services
         {
             if (positionViewModel is null)
                 throw new EntityNotFoundException(nameof(Position));
-            
+            var test = environment.ContentRootPath;
             string directoryName = DirectoryNameModifier(positionViewModel.Model);
             string path = Path.Combine(environment.ContentRootPath,
                 $"wwwroot\\Images\\Positions\\{directoryName}\\");
@@ -53,6 +54,25 @@ namespace MotoStore.Services
             var position = positionViewModel.MapToPosition();
             position.PathToImage = $"Images/Positions/{directoryName}/{fileName}";
             _positionRepository.Create(position);
+        }
+
+        public async Task<List<PositionShortInfoViewModel>> GetPositionsByAnyCriterionAsync(string criterion)
+        {
+            if (criterion.IsNullOrEmpty())
+            {
+                return _positionRepository.GetAll()
+                    .ToList()
+                    .MapToShortInfoList();
+            }
+            criterion = criterion.ToUpper();
+            var allPositions = _positionRepository.GetAllAsQueryable();
+            var positionsAsQueryable = allPositions.Where(p => 
+                p.Model.ToUpper().Contains(criterion) || 
+                p.Manufacturer.ToUpper().Contains(criterion));
+            var positionsTask = positionsAsQueryable.ToListAsync();
+            var positions = await positionsTask;
+            
+            return positions.MapToShortInfoList();
         }
 
         public void UpdatePosition(Position position)
@@ -66,7 +86,7 @@ namespace MotoStore.Services
         {
             _positionRepository.DeleteById(id);
         }
-        
+
         private string FileNameModifier(string model, string fileName)
         {
             string modelName = DirectoryNameModifier(model);

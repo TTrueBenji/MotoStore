@@ -6,5 +6,6 @@
         public string Model { get; set; }
         public string Manufacturer { get; set; }
         public string PathToImage { get; set; }
+        public decimal Price { get; set; }
     }
 }

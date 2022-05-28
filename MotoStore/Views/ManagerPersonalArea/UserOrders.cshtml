@@ -1,0 +1,82 @@
+﻿@model LayoutViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container text-center my-5">
+    <h2 class="py-5">Заказы</h2>
+</div>
+<div class="container">
+    <div class="row flex-wrap">
+        @foreach (var order in @Model.OrderViewModels)
+        {
+            <div class="col-sm-6 mx-auto my-3">
+                <div class="card">
+                    <div class="text-center">
+                        <img src="~/@order.PositionInfoViewModel.PathToImage"
+                             class="card-img-top w-50" alt="@order.PositionInfoViewModel.Model">
+                    </div>
+                    <div class="card-body">
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Id:</p>
+                                <p>@order.OrderId</p>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Производитель:</p>
+                                <p>@order.PositionInfoViewModel.Manufacturer</p>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Модель:</p>
+                                <p>@order.PositionInfoViewModel.Model</p>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Объем:</p>
+                                <p>@order.PositionInfoViewModel.EngineCapacity</p>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Количество тактов:</p>
+                                <p>@order.PositionInfoViewModel.NumberOfCycles</p>
+                            </div>
+                        </div>
+
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Дата заказа:</p>
+                                <p>@order.OrderDate</p>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Стоимость:</p>
+                                <p>@order.Price</p>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Доставлен:</p>
+                                <p>@order.Confirmed</p>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between">
+                                <p>Подтвержден:</p>
+                                <p>@order.IsCheckouted</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

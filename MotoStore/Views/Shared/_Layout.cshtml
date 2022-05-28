@@ -15,7 +15,10 @@
     <link rel="stylesheet" href="~/css/site.css"/>
 </head>
 <body>
-<header>
+<div id="spinner">
+    Loading...
+</div>
+<header class="fixed-top">
     @{
         User user = await _userManager.GetUserAsync(User);
     }
@@ -135,7 +138,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2022 - MotoStore - <a asp-area="" asp-controller="Home" asp-action="Index">Домой</a>
+        &copy; 2022 - MotoStore - <a asp-area="" asp-controller="Home" asp-action="Index" class="text-light">Домой</a>
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
@@ -144,5 +147,22 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="https://kit.fontawesome.com/e289fe644c.js" crossorigin="anonymous"></script>
 @await RenderSectionAsync("Scripts", false)
+<script type="text/javascript">
+    var spinnerVisible = false;
+    function showProgress() {
+        if (!spinnerVisible) {
+            $("div#spinner").fadeIn("fast");
+            spinnerVisible = true;
+        }
+    };
+    function hideProgress() {
+        if (spinnerVisible) {
+            var spinner = $("div#spinner");
+            spinner.stop();
+            spinner.fadeOut("fast");
+            spinnerVisible = false;
+        }
+    };
+</script>
 </body>
 </html>

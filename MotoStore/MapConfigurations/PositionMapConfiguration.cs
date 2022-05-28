@@ -17,7 +17,8 @@ namespace MotoStore.MapConfigurations
                 Model = model.Model,
                 EngineCapacity = model.EngineCapacity,
                 CreationDateTime = DateTime.Now,
-                NumberOfCycles = model.NumberOfCycles
+                NumberOfCycles = model.NumberOfCycles,
+                Price = model.Price
             };
         }
 
@@ -29,7 +30,8 @@ namespace MotoStore.MapConfigurations
                         Id = position.Id, 
                         Manufacturer = position.Manufacturer, 
                         Model = position.Model,
-                        PathToImage = position.PathToImage
+                        PathToImage = position.PathToImage,
+                        Price = position.Price
                     }).ToList();
         }
         
@@ -42,7 +44,8 @@ namespace MotoStore.MapConfigurations
                 Model = model.Model,
                 EngineCapacity = model.EngineCapacity,
                 NumberOfCycles = model.NumberOfCycles,
-                PathToImage = model.PathToImage
+                PathToImage = model.PathToImage,
+                Price = model.Price
             };
         }
 
@@ -51,7 +54,8 @@ namespace MotoStore.MapConfigurations
             Order order = new Order
             {
                 CreationDateTime = DateTime.Now,
-                PositionId = model.PositionId
+                PositionId = model.PositionId,
+                Price = model.Price
             };
             return order;
         }

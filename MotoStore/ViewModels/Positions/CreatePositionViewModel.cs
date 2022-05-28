@@ -14,7 +14,7 @@ namespace MotoStore.ViewModels.Positions
         
         [DisplayName("Производитель")]
         [Required(ErrorMessage = "Поле обязательно для ввода.")]
-        [StringLength(25, MinimumLength = 3, ErrorMessage = "Минимальная длина: 5. Максимальная: 25")]
+        [StringLength(25, MinimumLength = 2, ErrorMessage = "Минимальная длина: 5. Максимальная: 25")]
         public string Manufacturer { get; set; }
         
         [DisplayName("Число тактов")]
@@ -28,6 +28,12 @@ namespace MotoStore.ViewModels.Positions
         
         [Attributes.Validation.FileExtensions("jpg, png", ErrorMessage = "Некорректный формат файла")]
         [DisplayName("Загрузить изображение")]
+        [Required(ErrorMessage = "Загрузите изображение")]
         public IFormFile Image { get; set; }
+        
+        [DisplayName("Стоимость")]
+        [Required(ErrorMessage = "Поле обязательно для ввода.")]
+        [Range(10000, 1000000, ErrorMessage = "Некорректное значение")]
+        public decimal Price { get; set; }
     }
 }
