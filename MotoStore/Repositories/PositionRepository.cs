@@ -18,7 +18,12 @@ namespace MotoStore.Repositories
         {
             return _db.Positions;
         }
-
+        
+        public IQueryable<Position> GetAllAsQueryable()
+        {
+            return _db.Positions;
+        }
+        
         public Position GetById(string id)
         {
             return _db.Positions.FirstOrDefault(p => p.Id == id);

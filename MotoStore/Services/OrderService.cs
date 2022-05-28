@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using MotoStore.Exceptions;
 using MotoStore.MapConfigurations;
 using MotoStore.Models;
@@ -16,40 +18,54 @@ namespace MotoStore.Services
         private readonly IOrderRepository _orderRepository;
         private readonly IEmailService _emailService;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<OrderService> _logger;
 
         public OrderService(
             IOrderRepository orderRepository, 
             IEmailService emailService, 
-            UserManager<User> userManager)
+            UserManager<User> userManager, 
+            ILogger<OrderService> logger)
         {
             _orderRepository = orderRepository;
             _emailService = emailService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public IEnumerable<Order> GetPositions() => _orderRepository.GetAll();
         public void CreateOrder(Order order) => _orderRepository.Create(order);
         public async Task CreateLiveOrder(LiveOrderViewModel liveOrderViewModel)
         {
-            LiveOrder liveOrder = liveOrderViewModel.MapToOrderCheckoutViewModel();
-            var order = _orderRepository.GetById(liveOrder.OrderId);
-            order.IsCheckouted = true;
-            _orderRepository.Update(order);
-            _orderRepository.CreateLiveOrder(liveOrder);
-            var user = _userManager.Users.FirstOrDefault(u => u.Id == liveOrder.UserId);
-            var managers = await _userManager.GetUsersInRoleAsync("Manager");
-            var manager = managers.ToList().FirstOrDefault();
-            Task sendMailToUser = _emailService.SendEmailAsync(user?.Email, $"{user?.UserName}, Заказ оформлен",
-                "Подробнее по телефону +77777777777");
-            Task sendMailToManager =
-                    _emailService.SendEmailAsync(manager?.Email, $"{manager?.UserName}, поступил заказ", 
-                $"Имя клиента: {user?.UserName}\n" +
-                $"Телефон для связи: {user?.PhoneNumber}\n" +
-                $"Адрес доставки: {user?.Address}\n" +
-                $@"<a href='https://localhost:5001/ManagerPersonalArea?userId={manager?.Id}'>Перейти в личный кабинет</a>");
+            try
+            {
+                LiveOrder liveOrder = liveOrderViewModel.MapToOrderCheckoutViewModel();
+                var order = _orderRepository.GetById(liveOrder.OrderId);
+                order.IsCheckouted = true;
+                _orderRepository.Update(order);
+                _orderRepository.CreateLiveOrder(liveOrder);
+                var user = _userManager.Users.FirstOrDefault(u => u.Id == liveOrder.UserId);
+                var managers = await _userManager.GetUsersInRoleAsync("Manager");
+                var manager = managers.ToList().FirstOrDefault();
+                Task sendMailToUser = _emailService.SendEmailAsync(user?.Email, $"{user?.UserName}, Заказ оформлен",
+                    "Подробнее по телефону +77777777777");
+                Task sendMailToManager =
+                    _emailService.SendEmailAsync(manager?.Email, $"{manager?.UserName}, поступил заказ",
+                        $"<p>Имя клиента: {user?.UserName}</p>\n" +
+                        $"<p>Производитель: {order.Position.Manufacturer}</p>\n" +
+                        $"<p>Модель мотоцикла: {order.Position.Model}</p>\n" +
+                        $"<p>Телефон для связи: {user?.PhoneNumber}</p>\n" +
+                        $"<p>Адрес доставки: {user?.Address}</p>\n" +
+                        $@"<a href='https://localhost:5001/ManagerPersonalArea?userId={manager?.Id}'>Перейти в личный кабинет</a>");
+                await sendMailToManager;
+                await sendMailToUser;
 
-            await sendMailToManager;
-            await sendMailToUser;
+                _logger.LogInformation("{@Service}.CreateLiveOrder письма отправились.", typeof(OrderService));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("{@Service}.CreateLiveOrder письма не отправились. Ошибка: {@Error}",
+                    typeof(OrderService), e.Message);
+            }
         }
 
         public void UpdateOrder(Order order) => _orderRepository.Update(order);

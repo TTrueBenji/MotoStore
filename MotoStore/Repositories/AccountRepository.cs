@@ -14,19 +14,13 @@ namespace MotoStore.Repositories
     public class AccountRepository : IAccountRepository
     {
         private readonly UserManager<User> _userManager;
-        private readonly StoreApplicationContext _db;
-        private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AccountRepository> _logger;
 
         public AccountRepository(
             UserManager<User> userManager, 
-            StoreApplicationContext db, 
-            SignInManager<User> signInManager, 
             ILogger<AccountRepository> logger)
         {
             _userManager = userManager;
-            _db = db;
-            _signInManager = signInManager;
             _logger = logger;
         }
         public IEnumerable<User> GetAll()

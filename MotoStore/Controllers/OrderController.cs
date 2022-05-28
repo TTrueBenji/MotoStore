@@ -68,7 +68,7 @@ namespace MotoStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Checkout(LayoutViewModel layoutViewModel)
+        public async Task<IActionResult> Checkout(LayoutViewModel layoutViewModel)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace MotoStore.Controllers
                 {
                     _logger.LogInformation("{Controller} Данные: {@Data}",
                         typeof(OrderController), layoutViewModel);
-                    _orderService.CreateLiveOrder(layoutViewModel.LiveOrderViewModel);
+                    await _orderService.CreateLiveOrder(layoutViewModel.LiveOrderViewModel);
                     return RedirectToAction(
                         "Index",
                         "UserPersonalArea",

@@ -7,8 +7,14 @@
 
 <div class="container">
     <div class="text-center my-5">
-        <h2 class="сatalog-headding">Каталог продукции</h2>
+        <h2 class="сatalog-headding py-5">Каталог продукции</h2>
     </div>
+    <form asp-controller="SearchPosition" asp-action="Search" method="get">
+        <div class="input-group mb-3">
+            <button class="btn btn-outline-warning" type="submit" id="button-addon1">Искать</button>
+            <input name="criterion" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        </div>
+    </form>
     <div class="row justify-content-evenly mb-5">
         @foreach (var position in Model.AllPositionsViewModel.Positions)
         {
@@ -27,4 +33,6 @@
         }
     </div>
 </div>
+<div class="container py-5">
     @await Html.PartialAsync("PartialViews/Position/PositionFullInfoPartialView", Model)
+</div>
