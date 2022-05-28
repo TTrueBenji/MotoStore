@@ -15,6 +15,10 @@ namespace MotoStore.Services
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
                 
+                var absolutePath = Path.Combine(path, fileName);
+                
+                if (File.Exists(absolutePath))
+                    return;
                 await using var stream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
                 await file.CopyToAsync(stream);
             }
