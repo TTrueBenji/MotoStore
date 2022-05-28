@@ -7,7 +7,7 @@ namespace MotoStore.MapConfigurations
 {
     public static class OrderMapConfiguration
     {
-        public static IEnumerable<OrderViewModel> MapToOrderViewModels(this IEnumerable<Order> orders)
+        public static List<OrderViewModel> MapToOrderViewModels(this IEnumerable<Order> orders)
         {
             return orders.Select(
                 order => new OrderViewModel
